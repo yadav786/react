@@ -2,6 +2,9 @@ import React,{Component,Fragment} from 'react';
 import ChildB from './ChildB'; 
 import ErrorBoundary from "./ErrorBoundary" 
 import ReactDOM from "react-dom"
+import { connect } from "react-redux";
+import { addArticleAction } from '../addArticleAction'; 
+    
 class  ChildA extends Component {    
       
    constructor(props){ 
@@ -9,11 +12,13 @@ class  ChildA extends Component {
 	    this.state = {valid:false }   
 	    this.myRef = React.createRef()  
 		this.btnClick = this.btnClick.bind(this)  
-		console.log(this) 
-	}        
+		console.log(this);
+		this.props.dispatch(addArticleAction({title:'elllo', id:4}));    
+		console.log('articles==',this.props.articles);    
+	}         
  
     btnClick(){
-	   console.log(this)
+	   console.log(this) 
 	  
 	   this.myRef.current.focus()
 	   this.setState({valid:!this.state.valid})  
@@ -39,21 +44,19 @@ class  ChildA extends Component {
           </ErrorBoundary>
 	    } 
          <button onClick={this.btnClick}>BTN</button> 
-         <div ref={this.props.innerRef}>
-         Div has ref
          
-         </div>   
          </>    
          
       )     
    }
-
+ 
 }
-       
-//export default ChildA; 
-export default React.forwardRef((props, ref) => <ChildA 
-  innerRef={ref} {...props}
-/>);    
+ 
+ const mapStateToProps = (state) => {
+  	 return state;
+ }          
+ export default connect(mapStateToProps, null)(ChildA);   
+    
 
 
 

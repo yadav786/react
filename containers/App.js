@@ -5,10 +5,12 @@ import StateWithoutClass from '../containers/stateWithoutClass';
 import ArrayofComponentsRender from "../containers/ArrayofComponentsRender"; 
 import NewPortal from "../containers/NewPortal"; 
 import OldHOC from "../containers/OldHOC";
+import AppRouter from "../containers/AppRouter";
 export default class App extends Component { 
-       render(){                             
-		return (          
-		<Fragment>      
+       render(){                              
+		return (           
+		<Fragment>
+		<AppRouter/>    
 		<OldHOC data="Pankaj" /> 
 		<NewPortal/>   	 
 		<ArrayofComponentsRender/>
