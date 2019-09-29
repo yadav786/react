@@ -3,18 +3,18 @@ import ChildB from './ChildB';
 import ErrorBoundary from "./ErrorBoundary" 
 import ReactDOM from "react-dom"
 import { connect } from "react-redux";
-import { addArticleAction } from '../addArticleAction'; 
+import { addArticleAction, getData } from '../addArticleAction'; 
     
-class  ChildA extends Component {    
+class  ChildA extends Component {     
       
    constructor(props){ 
 	    super(props) 
-	    this.state = {valid:false }   
-	    this.myRef = React.createRef()  
+	    this.state = {valid:false, data:[{title:'Hello', id:4}]}   
+	    this.myRef = React.createRef()    
 		this.btnClick = this.btnClick.bind(this)  
-		console.log(this);
-		this.props.dispatch(addArticleAction({title:'elllo', id:4}));    
-		console.log('articles==',this.props.articles);    
+		//console.log(this);
+		//console.log('articles==',this.props.articles);  
+		   
 	}         
  
     btnClick(){
@@ -24,19 +24,30 @@ class  ChildA extends Component {
 	   this.setState({valid:!this.state.valid})  
    }        
   
-   componentDidMount(){
-			console.log("findDOMNode=====",ReactDOM.findDOMNode(this))
-	   }
-  
-   render(){
-	   
-	    
+   componentDidMount(){    
+	        //addArticleAction(articles Object);
+	        //this.props.addArticleAction({title:'Hello', id:4});
+			//console.log("findDOMNode=====",ReactDOM.findDOMNode(this))
+			 
+			 this.props.getData();
+			 console.log('childA===',this);         
+			//this.props.dispatch(addArticleAction({title:'Hello', id:4}));    
+		    //console.log('articles in componentDidMount==',this.props.articles);
+	   }         
+    
+   render(){ 
+	   	      //console.log(this.props.articles)   
 	  // this.setState({nationality:"Chinese"})  maximum update exceeded componentWillMount and componentDidMount 
 	  const AnElement = React.createElement("h2", {className:"blue", style:{color:"blue"}}, "This is the CreatedElement Div")
 	  console.log(AnElement)   
       return(            
          <><p> This is the Child A!  </p>
-         {AnElement} 
+         {AnElement}    
+         <div>
+         {  this.props.remoteArticles.map(value => {
+			    return (<h4 key={value.id}>{value.title}</h4>)    
+	      }) }      
+		 </div>    
          <input type="text" name="myName" defaultValue="hello" ref={this.myRef} />     
          { this.state.valid &&    
           <ErrorBoundary>      
@@ -55,8 +66,22 @@ class  ChildA extends Component {
  const mapStateToProps = (state) => {
   	 return state;
  }          
- export default connect(mapStateToProps, null)(ChildA);   
-    
+  
+ 
+ const mapDispatchToProps = (dispatch) => {
+       	return {
+			 addArticleAction : (article) => {
+				        dispatch(addArticleAction(article));
+			   },
+			   getData :() => {
+			          dispatch(getData());
+			   } 
+		    } 
+ }     
+ 
+  
+ export default connect(mapStateToProps, mapDispatchToProps)(ChildA);   
+     
 
 
 
